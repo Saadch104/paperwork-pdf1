@@ -1,0 +1,14 @@
+node_modules
+**/node_modules
+dist
+**/dist
+.git
+.openai
+.sites-runtime
+**/.env
+**/.env.local
+backend/uploads
+frontend/public/cmaps
+frontend/public/standard_fonts
+frontend/public/wasm
+test-results

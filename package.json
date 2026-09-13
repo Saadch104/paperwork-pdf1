@@ -1,0 +1,30 @@
+{
+  "name": "paperwork-pdf",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w frontend -- --host 0.0.0.0 --port 4173",
+    "postinstall": "node scripts/prepare-assets.mjs",
+    "build": "node scripts/package-source.mjs && npm run build -w frontend && npm run build -w backend",
+    "test": "vitest run",
+    "typecheck": "tsc -p frontend/tsconfig.json --noEmit && tsc -p backend/tsconfig.json --noEmit",
+    "test:conversion": "RUN_GOTENBERG_TESTS=1 vitest run backend/tests/integration.test.ts"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^22.15.30",
+    "@types/supertest": "^6.0.3",
+    "fflate": "^0.8.3",
+    "jsdom": "^26.1.0",
+    "prettier": "^3.9.6",
+    "supertest": "^7.1.1",
+    "typescript": "^5.8.3",
+    "vitest": "^5.0.0"
+  }
+}

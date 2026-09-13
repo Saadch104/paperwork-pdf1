@@ -1,0 +1,70 @@
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:8.34.0
+    ports:
+      - "127.0.0.1:3001:3000"
+    command:
+      - gotenberg
+      - --api-timeout=90s
+      - --api-body-limit=30MB
+      - --api-disable-download-from=true
+      - --webhook-disable=true
+      - --chromium-disable-javascript=true
+      - --chromium-deny-list=^https?://.*
+      - --chromium-deny-private-ips=true
+      - --chromium-deny-public-ips=true
+      - --chromium-clear-cache=true
+      - --chromium-clear-cookies=true
+      - --chromium-clear-storage=true
+      - --chromium-max-concurrency=2
+      - --chromium-max-queue-size=4
+      - --libreoffice-deny-list=.*
+      - --libreoffice-deny-private-ips=true
+      - --libreoffice-deny-public-ips=true
+      - --libreoffice-max-queue-size=4
+      - --log-level=warn
+    networks: [conversion]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    shm_size: 256mb
+    mem_limit: 2g
+    cpus: 2
+    pids_limit: 512
+    restart: unless-stopped
+  backend:
+    profiles: [full]
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      PORT: 4000
+      GOTENBERG_URL: http://gotenberg:3000
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080}
+      CONVERSION_CONCURRENCY: 2
+      UPLOAD_DIR: /tmp/uploads
+      TRUST_PROXY_HOPS: 1
+    depends_on: [gotenberg]
+    networks: [web, conversion]
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=128m,mode=1777"]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 512m
+    pids_limit: 100
+    restart: unless-stopped
+  frontend:
+    profiles: [full]
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports: ["127.0.0.1:8080:8080"]
+    depends_on: [backend]
+    networks: [web]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 128m
+    restart: unless-stopped
+networks:
+  web: {}
+  conversion:
+    internal: true

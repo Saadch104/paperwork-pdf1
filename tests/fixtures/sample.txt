@@ -1,0 +1,3 @@
+Paperwork conversion test
+TXT conversion preserves this text.
+Literal <script> text remains literal.

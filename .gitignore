@@ -1,0 +1,16 @@
+node_modules/
+dist/
+frontend/dist/
+backend/dist/
+.sites-runtime/
+.env
+.env.local
+backend/uploads/*
+!backend/uploads/.gitkeep
+coverage/
+test-results/
+*.log
+frontend/public/cmaps/
+frontend/public/standard_fonts/
+frontend/public/wasm/
+frontend/public/paperwork-pdf-source.zip
