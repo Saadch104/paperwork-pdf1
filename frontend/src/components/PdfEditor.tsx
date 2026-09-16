@@ -82,6 +82,13 @@ const baseEdit = {
   bold: false,
   italic: false,
 };
+const pdfOptions = {
+  cMapUrl: `${import.meta.env.BASE_URL}cmaps/`,
+  cMapPacked: true,
+  standardFontDataUrl: `${import.meta.env.BASE_URL}standard_fonts/`,
+  wasmUrl: `${import.meta.env.BASE_URL}wasm/`,
+  isEvalSupported: false,
+};
 
 export default function PdfEditor() {
   const [bytes, setBytes] = useState<Uint8Array | null>(null),
@@ -524,6 +531,12 @@ export default function PdfEditor() {
             <div className="surface-wrapper" ref={surface}>
               {bytes && (
                 <Document
+                  options={pdfOptions}
+                  file={{ data: bytes.slice() }}
+                  onLoadSuccess={(d) => {
+                    setDoc(d);
+                    setNumPages(d.numPages);
+                  }}
                   file={{ data: bytes.slice() }}
                   onLoadSuccess={(d) => {
                     setDoc(d);
