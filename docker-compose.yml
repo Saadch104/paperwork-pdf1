@@ -14,7 +14,7 @@ services:
       - --chromium-deny-private-ips=true
       - --chromium-deny-public-ips=true
       - --chromium-clear-cache=true
-      - --chromium-clear-cookies=true
+      #- --chromium-clear-cookies=true
       - --chromium-clear-storage=true
       - --chromium-max-concurrency=2
       - --chromium-max-queue-size=4
