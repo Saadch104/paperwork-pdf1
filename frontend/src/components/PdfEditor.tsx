@@ -106,7 +106,7 @@ export default function PdfEditor() {
     [draft, setDraft] = useState<Edit | null>(null),
     [defaults] = useState(baseEdit);
   const [, setBlocks] = useState<TextBlock[]>([]),
-    [, setInfo] = useState<PageInfo | null>(null),
+    [info, setInfo] = useState<PageInfo | null>(null),
     [busy, setBusy] = useState(""),
     [error, setError] = useState(""),
     [notice, setNotice] = useState("");
@@ -532,11 +532,6 @@ export default function PdfEditor() {
               {bytes && (
                 <Document
                   options={pdfOptions}
-                  file={{ data: bytes.slice() }}
-                  onLoadSuccess={(d) => {
-                    setDoc(d);
-                    setNumPages(d.numPages);
-                  }}
                   file={{ data: bytes.slice() }}
                   onLoadSuccess={(d) => {
                     setDoc(d);
